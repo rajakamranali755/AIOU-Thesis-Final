@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ────────────────────────────────────────────────────────────────────────────
+   SEMANTIC THEME TOKENS
+   These map the landing page's semantic classes (bg-background, text-foreground,
+   bg-primary, text-muted-foreground, border-border, bg-accent, …) onto the
+   project's existing navy palette. To re-theme the whole landing page, change
+   only these RGB channel values — every section inherits automatically.
+   Values are "R G B" channels so Tailwind opacity modifiers (e.g. bg-primary/30)
+   work out of the box.
+   ──────────────────────────────────────────────────────────────────────────── */
+:root {
+  --background: 255 255 255;          /* white */
+  --foreground: 15 23 42;             /* slate-900 */
+  --card: 255 255 255;
+  --card-foreground: 15 23 42;
+  --muted: 241 245 249;               /* slate-100 */
+  --muted-foreground: 100 116 139;    /* slate-500 */
+  --border: 226 232 240;              /* slate-200 */
+  --primary: 30 64 175;               /* blue-800 (navy) */
+  --primary-foreground: 255 255 255;
+  --accent: 67 56 202;                /* indigo-700 */
+  --accent-foreground: 255 255 255;
+  --ring: 37 99 235;                  /* blue-600 */
+}
+
+* { box-sizing: border-box; }
+
+/* Global 1.6 line-height for all paragraph/textarea inputs
+   (Chapters, Abstract, Objectives, Dedication, etc.) */
+textarea {
+  line-height: 1.6 !important;
+}
+/* Scales the whole UI up a bit (text, padding, gaps, sidebar).
+   The A4 document preview uses absolute cm/pt units, so the actual
+   thesis/document formatting is unaffected. */
+html { font-size: 18px; }
+
+body {
+  margin: 0;
+  background-color: #eff6ff;
+  background-image: linear-gradient(135deg, #eff6ff 0%, #ffffff 45%, #eef2ff 100%);
+  background-attachment: fixed;
+}
+
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: #eef2ff; }
+::-webkit-scrollbar-thumb { background: #bfdbfe; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #1d4ed8; }
+
+@media print {
+  html { font-size: 16px; }
+  body { background: white !important; background-image: none !important; }
+  .no-print { display: none !important; }
+  @page { size: A4; margin: 0; }
+  /* Each thesis section is its own A4 page when printing the preview */
+  #preview-pane .thesis-page {
+    box-shadow: none !important;
+    margin: 0 !important;
+    width: 21cm !important;
+    height: 29.7cm !important;
+    overflow: hidden !important;
+    break-after: page;
+    page-break-after: always;
+  }
+  #preview-pane .thesis-page:last-child { page-break-after: auto; break-after: auto; }
+}
+
+/* ── Landing page utilities ─────────────────────────────────────────────── */
+/* Infinite logo ticker */
+@keyframes lp-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.lp-marquee { animation: lp-marquee 30s linear infinite; }
+.lp-marquee-group:hover .lp-marquee { animation-play-state: paused; }
+
+/* Soft float for the 3D artifact shapes */
+@keyframes lp-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+.lp-float { animation: lp-float 6s ease-in-out infinite; }
+
+/* Themed range slider (uses --accent token) */
+.lp-range { -webkit-appearance: none; appearance: none; height: 6px; border-radius: 9999px;
+  background: rgb(var(--muted)); outline: none; }
+.lp-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px;
+  border-radius: 9999px; background: rgb(var(--primary)); border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgb(var(--primary) / 0.4); cursor: pointer; transition: transform .15s ease; }
+.lp-range::-webkit-slider-thumb:hover { transform: scale(1.15); }
+.lp-range::-moz-range-thumb { width: 22px; height: 22px; border-radius: 9999px;
+  background: rgb(var(--primary)); border: 3px solid #fff; cursor: pointer; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-marquee, .lp-float { animation: none !important; }
+}
